@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from random import choice
 
 app = Flask(__name__)
@@ -33,32 +33,55 @@ quotes = [
    }
 ]
 
+
 @app.route("/")
 def hello_world():
-   return "Hello, World!"
+    return "Hello, World!"
+
 
 @app.route("/quotes")
 def get_quotes():
-   return quotes
+    return quotes
 
+
+# Задания 1-2
 @app.route("/quotes/<int:quote_id>")
 def show_quote_by_id(quote_id):
-   for quote in quotes:
-      if quote["id"] == quote_id:
-         return quote, 200
-   return f"Quote with id={quote_id} not found", 404
+    for quote in quotes:
+        if quote["id"] == quote_id:
+            return quote, 200
+    return f"Quote with id={quote_id} not found", 404
 
+
+# Задание 3
 @app.route("/quotes/count")
 def quotes_count():
-   return f" Количество цитат на сайте: {len(quotes)}"
+    quotes_total = {
+        "quotes_total": len(quotes)
+    }
+    return quotes_total
 
+
+# Задание 4
 @app.route("/quotes/random")
 def get_random_quote():
-   return choice(quotes)
+    return choice(quotes)
+
 
 @app.route("/about")
 def about():
-   return about_me
+    return about_me
+
+
+@app.route("/quotes", methods=["POST"])
+def create_quote():
+    new_quote = request.json
+    last_quote = quotes[-1]
+    new_id = last_quote["id"] + 1
+    new_quote["id"] = new_id
+    quotes.append(new_quote)
+    return new_quote, 201
+
 
 if __name__ == "__main__":
-   app.run(debug=True)
+    app.run(debug=True)
