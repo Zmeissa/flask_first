@@ -103,9 +103,8 @@ def edit_quote(quote_id):
 def delete(quote_id):
     for quote in quotes:
         if quote["id"] == quote_id:
-            print("-1")
-            del quotes[quote["id"] - 1]
-        return f'Quote with id = {quote["id"]} is delete', 204
+            del quotes[quote_id - 1]
+            return f'Quote with id = {quote_id} is delete', 204
     return f"Quote with id={quote_id} not found", 404
 
 
