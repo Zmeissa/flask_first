@@ -73,6 +73,7 @@ def about():
     return about_me
 
 
+# Практика 1.2 Задания 1-2
 @app.route("/quotes", methods=["POST"])
 def create_quote():
     new_quote = request.json
@@ -81,6 +82,31 @@ def create_quote():
     new_quote["id"] = new_id
     quotes.append(new_quote)
     return new_quote, 201
+
+
+# Задание 4
+@app.route("/quotes/<int:quote_id>", methods=['PUT'])
+def edit_quote(quote_id):
+    for quote in quotes:
+        if quote_id == quote["id"]:
+            new_data = request.json
+            if "author" in new_data:
+                quote["author"] = new_data['author']
+            if "text" in new_data:
+                quote['text'] = new_data['text']
+            return quote, 200
+    return f"Quote with id={quote_id} not found", 404
+
+
+# Задание 5
+@app.route("/quotes/<int:quote_id>", methods=['DELETE'])
+def delete(quote_id):
+    for quote in quotes:
+        if quote["id"] == quote_id:
+            print("-1")
+            del quotes[quote["id"] - 1]
+        return f'Quote with id = {quote["id"]} is delete', 204
+    return f"Quote with id={quote_id} not found", 404
 
 
 if __name__ == "__main__":
