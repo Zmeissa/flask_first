@@ -26,7 +26,7 @@ quotes = [
    {
        "id": 6,
        "author": "Mosher’s Law of Software Engineering",
-       "rating": 5,
+       "rating": 4,
        "text": "Не волнуйтесь, если что-то не работает. Если бы всё работало, вас бы уволили."
    },
    {
@@ -119,20 +119,19 @@ def delete(quote_id):
 # Задание 2.2
 @app.route('/quotes/search', methods=['GET'])
 def search():
-    args = request.args
-    author = args.get('author', type=str)
-    rating = args.get('rating', default=0, type=int)
+    args = request.args.to_dict()
+    author = args.get('author')
+    rating = args.get('rating')
     result = {}
+
     for quote in quotes:
-        if quote["author"] == author and quote["rating"] == rating:
+        if quote["author"] == author and str(quote["rating"]) == rating:
             result = {key: value for key, value in quote.items()}
         if quote["author"] == author:
             result = {key: value for key, value in quote.items()}
-        if quote["rating"] == rating:
+        if str(quote["rating"]) == rating:
             result = {key: value for key, value in quote.items()}
-
-        return result
-
+    return result
 
 if __name__ == "__main__":
     app.run(debug=True)
