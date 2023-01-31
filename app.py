@@ -26,7 +26,7 @@ quotes = [
    {
        "id": 6,
        "author": "Mosher’s Law of Software Engineering",
-       "rating": 4,
+       "rating": 5,
        "text": "Не волнуйтесь, если что-то не работает. Если бы всё работало, вас бы уволили."
    },
    {
@@ -50,7 +50,7 @@ def get_quotes():
 
 # Задания 1-2
 @app.route("/quotes/<int:quote_id>")
-def show_quote_by_id(quote_id):
+def get_quote_by_id(quote_id):
     for quote in quotes:
         if quote["id"] == quote_id:
             return quote, 200
@@ -122,16 +122,20 @@ def search():
     args = request.args.to_dict()
     author = args.get('author')
     rating = args.get('rating')
-    result = {}
+    result = []
 
     for quote in quotes:
         if quote["author"] == author and str(quote["rating"]) == rating:
-            result = {key: value for key, value in quote.items()}
+            temp_dict = {key: value for key, value in quote.items()}
+            result.append(temp_dict)
         if quote["author"] == author:
-            result = {key: value for key, value in quote.items()}
+            temp_dict = {key: value for key, value in quote.items()}
+            result.append(temp_dict)
         if str(quote["rating"]) == rating:
-            result = {key: value for key, value in quote.items()}
+            temp_dict = {key: value for key, value in quote.items()}
+            result.append(temp_dict)
     return result
+
 
 if __name__ == "__main__":
     app.run(debug=True)
