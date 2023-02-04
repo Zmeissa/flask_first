@@ -59,6 +59,7 @@ def get_quote_by_id(quote_id):
 
 # Задание 3
 @app.route("/quotes/count")
+# TODO: результат не соответствует формату задания
 def quotes_count():
     quotes_total = {
         "quotes_total": len(quotes)
